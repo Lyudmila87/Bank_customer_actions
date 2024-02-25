@@ -36,3 +36,6 @@ class BasePage:
 
     def switch_to_alert_and_accept(self) -> None:
         self.driver.switch_to.alert.accept()
+
+    def get_text_from_alert_window(self) -> str:
+        return self.driver.switch_to.alert.text

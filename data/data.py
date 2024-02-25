@@ -14,11 +14,9 @@ class Customer:
 
     def __post_init__(self):
         post_code_str = str(self.post_code)
-        self.first_name = ''
+        self.first_name = ""
 
-        while len(post_code_str) > 0:  # формирование имени на основании почтового кода
-            index = int(post_code_str[0:2])
-            letter = ascii_lowercase[index % 26]
-            self.first_name += letter
-            post_code_str = post_code_str[2:]
+        for index in range(0, len(post_code_str), 2):  # формирование имени на основании почтового кода
+            letter_index = int(post_code_str[index: index+2]) % 26
+            self.first_name += ascii_lowercase[letter_index]
         self.first_name = self.first_name.capitalize()

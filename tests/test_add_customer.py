@@ -8,8 +8,8 @@ from pages.manager_page import ManagerPage
 
 
 @allure.feature("XYZ Bank")
-@allure.story('UI')
-@allure.title('Создание клиента')
+@allure.story("UI")
+@allure.title("Создание клиента")
 @allure.description("""
     Цель: Проверить создание клиента
 
@@ -17,15 +17,9 @@ from pages.manager_page import ManagerPage
         - Открыть браузер
 
     Шаги:
-    1. Перейти на страницу XYZ Bank
-    2. Нажать кнопку 'Add Customer'
-    3. Ввести значение "Post Code", состоящее из любых 10 цифр
-    4. Рассчитать и ввести значение "First Name" по следующей формуле:
-         - Post Code разбивается на двузначные числа
-         - Каждое число преобразовывается в букву английского алфавита по порядку от 0 до 25
-    5. Ввести любое значение "Last Name" 
-    5. Нажать кнопку 'Add Customer', расположенную под полями для ввода значений
-    6. Убедиться, что появилось всплывающее окно с надписью "Customer added successfully with customer id"
+    1. Открытие страницы XYZ bank
+    2. Добавление клиента
+    3. Убеждение, что добавленный клиент присутствует в таблице
     
     Постусловие:
         - Удалить добавленного клиента
@@ -37,19 +31,19 @@ from pages.manager_page import ManagerPage
 @pytest.mark.ui
 def test_add_customer(driver, delete_customers):
 
-    with allure.step('Открытие страницы XYZ bank'):
+    with allure.step("Открытие страницы XYZ bank"):
         manager_page = ManagerPage(driver)
         manager_page.open()
 
-    with (allure.step('Добавление клиента')):
+    with (allure.step("Добавление клиента")):
         manager_page.go_to_add_customer()
-        add_customer = AddNewCustomerPage(driver)
+        add_customer_page = AddNewCustomerPage(driver)
         customer = Customer()
-        add_customer.fill_customer_form(customer)
-        assert "Customer added successfully with customer id" in driver.switch_to.alert.text, "Надпись на всплывающем \
-         окне не соответствует ожидаемому результату"
+        add_customer_page.fill_customer_form(customer)
+        assert "Customer added successfully with customer id" in add_customer_page.get_text_from_alert_window(),\
+            "Надпись на всплывающем окне не соответствует ожидаемому результату"
 
-    with allure.step('Убедиться, что добавленный клиент присутствует в таблице'):
+    with allure.step("Убеждение, что добавленный клиент присутствует в таблице"):
         manager_page.switch_to_alert_and_accept()
         manager_page.go_to_customers()
         customer_page = CustomersPage(driver)
